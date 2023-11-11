@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/monsterImage"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/placeholder_image" />
+
+        <TextView
+            android:id="@+id/monsterNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Number: 10487"
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/monsterImage"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/monsterName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Name: Monster Name"
+            app:layout_constraintTop_toBottomOf="@+id/monsterNumber"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/monsterStarAndType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7☆ - Type: Mechanic"
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/monsterName"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/awokenSkills"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="覺醒 Skills"
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/monsterStarAndType"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/awokenSkillsIcons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/awokenSkills"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="8dp">
+            <!-- Dynamically add ImageViews for skills here -->
+        </LinearLayout>
+
+        <!-- Add more TextViews and LinearLayouts for 超覺醒, 主動技, 隊長技, 技能CD, 進化系統 in a similar way as above -->
+
+        <TextView
+            android:id="@+id/skillCD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Skill CD: LV.1 CD: 11 - LV.MAX CD: 6"
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/awokenSkillsIcons"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/leaderSkill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Leader Skill: Description"
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/skillCD"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/activeSkill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Active Skill: Description"
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/leaderSkill"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/evolutionSystem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/activeSkill"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="8dp">
+            <!-- Dynamically add ImageViews for evolution system here -->
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

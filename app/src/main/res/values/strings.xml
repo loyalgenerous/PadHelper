@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PadHelper</string>
+    <string name="news_image_description">News Image Description</string>
+    <string name="loading">Loading…</string>
+</resources>
