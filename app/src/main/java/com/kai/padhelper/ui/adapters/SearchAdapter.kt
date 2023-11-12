@@ -13,8 +13,8 @@ import com.kai.padhelper.R
 import com.kai.padhelper.data.model.PadSearchModel
 import javax.inject.Inject
 
-class PadSearchAdapter @Inject constructor() :
-    RecyclerView.Adapter<PadSearchAdapter.ViewHolder>() {
+class SearchAdapter @Inject constructor() :
+    RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
     private var mPadSearchList = listOf<PadSearchModel?>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

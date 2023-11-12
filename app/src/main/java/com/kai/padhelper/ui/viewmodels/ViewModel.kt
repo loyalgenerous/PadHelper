@@ -3,7 +3,6 @@ package com.kai.padhelper.ui.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.kai.padhelper.data.repository.PadSearchRepository
 import kotlinx.coroutines.Dispatchers
 import androidx.lifecycle.viewModelScope
 import com.kai.padhelper.data.model.PadSearchModel
@@ -13,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PadSearchViewModel @Inject constructor(
+class ViewModel @Inject constructor(
     private val mPadSearchRepository: IPadSearchRepository
 ): ViewModel() {
 
