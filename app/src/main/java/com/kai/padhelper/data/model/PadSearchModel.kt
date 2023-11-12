@@ -6,5 +6,6 @@ data class PadSearchModel(
     var typeUrls: MutableList<String>?,
     var awokenUrls: MutableList<String>?,
     var superAwokenUrls: MutableList<String>?,
-    var skillCd: Pair<String?, String?>?
+    var skillCd: Pair<String?, String?>?,
+    var id: String?
 )

@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,7 +60,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 tmpList.add(0, null)
                 searchAdapter.setPadSearchList(tmpList)
                 searchAdapter.notifyDataSetChanged()
-                val queryUrl = "https://pad.chesterip.cc/" + urlEditText.text + "/"
+                val queryUrl = "https://pad.chesterip.cc/" + urlEditText.text
                 viewModel.fetchData(queryUrl)
             } else {
                 Toast.makeText(requireContext(), "輸入編號錯誤！", Toast.LENGTH_SHORT).show()
@@ -70,9 +69,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun setPadSearchObserver() {
-        viewModel.padSearchListLiveData.observe(viewLifecycleOwner, Observer { newData ->
+        viewModel.padSearchListLiveData.observe(viewLifecycleOwner) { newData ->
             searchAdapter.setPadSearchList(newData)
             searchAdapter.notifyDataSetChanged()
-        })
+        }
     }
 }

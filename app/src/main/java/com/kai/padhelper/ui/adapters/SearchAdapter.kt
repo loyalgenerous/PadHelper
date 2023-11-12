@@ -34,6 +34,7 @@ class SearchAdapter @Inject constructor() :
             holder.awokenImagesLinearLayout.removeAllViews()
             holder.superAwokenImagesLinearLayout.removeAllViews()
             holder.skillCdTextView.text = ""
+            holder.characterId.text = ""
         } else {
             holder.nameTextView.text = character.name
             Glide.with(holder.iconImageView.context)
@@ -84,6 +85,7 @@ class SearchAdapter @Inject constructor() :
             } else {
                 holder.skillCdTextView.text = "Skill: ${character.skillCd?.second}"
             }
+            holder.characterId.text = "No. " + character.id
         }
     }
 
@@ -98,6 +100,7 @@ class SearchAdapter @Inject constructor() :
         val awokenImagesLinearLayout: LinearLayout = itemView.findViewById(R.id.awokenImagesLinearLayout)
         val superAwokenImagesLinearLayout: LinearLayout = itemView.findViewById(R.id.superAwokenImagesLinearLayout)
         val skillCdTextView: TextView = itemView.findViewById(R.id.skillCdTextView)
+        val characterId: TextView = itemView.findViewById(R.id.character_id)
     }
     fun setPadSearchList(padSearchList: List<PadSearchModel?>) {
         this.mPadSearchList = padSearchList

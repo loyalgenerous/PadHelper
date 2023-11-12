@@ -30,11 +30,13 @@ class ViewModel @Inject constructor(
                 val typeUrls = mPadSearchRepository.getTypeIconUrls()
                 val awokenAndKillUrls = mPadSearchRepository.getAwokenAndKillerIconUrls()
                 val skillCd = mPadSearchRepository.getSkillCd()
+                val characterId = url.substringAfterLast("/")
 
                 mPadSearchList.add(
                     0, PadSearchModel(
                         name, iconUrl, typeUrls,
-                        awokenAndKillUrls["awoken"], awokenAndKillUrls["superAwoken"], skillCd
+                        awokenAndKillUrls["awoken"], awokenAndKillUrls["superAwoken"],
+                        skillCd, characterId
                     )
                 )
                 mPadSearchLiveData.postValue(mPadSearchList.toList())
