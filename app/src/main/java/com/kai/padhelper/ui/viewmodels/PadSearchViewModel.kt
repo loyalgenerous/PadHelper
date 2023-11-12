@@ -7,11 +7,15 @@ import com.kai.padhelper.data.repository.PadSearchRepository
 import kotlinx.coroutines.Dispatchers
 import androidx.lifecycle.viewModelScope
 import com.kai.padhelper.data.model.PadSearchModel
+import com.kai.padhelper.data.repository.IPadSearchRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class PadSearchViewModel @Inject constructor(
-        private val mPadSearchRepository: PadSearchRepository): ViewModel() {
+    private val mPadSearchRepository: IPadSearchRepository
+): ViewModel() {
 
     private val mPadSearchList = mutableListOf<PadSearchModel>()
     private val mPadSearchLiveData = MutableLiveData<List<PadSearchModel>>()
@@ -28,8 +32,12 @@ class PadSearchViewModel @Inject constructor(
                 val awokenAndKillUrls = mPadSearchRepository.getAwokenAndKillerIconUrls()
                 val skillCd = mPadSearchRepository.getSkillCd()
 
-                mPadSearchList.add(0, PadSearchModel(name, iconUrl, typeUrls,
-                    awokenAndKillUrls["awoken"], awokenAndKillUrls["superAwoken"], skillCd))
+                mPadSearchList.add(
+                    0, PadSearchModel(
+                        name, iconUrl, typeUrls,
+                        awokenAndKillUrls["awoken"], awokenAndKillUrls["superAwoken"], skillCd
+                    )
+                )
                 mPadSearchLiveData.postValue(mPadSearchList.toList())
             } catch (e: Exception) {
                 e.printStackTrace()

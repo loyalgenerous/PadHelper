@@ -6,32 +6,27 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.kai.padhelper.dagger.DaggerPadSearchComponent
 import com.kai.padhelper.ui.adapters.PadSearchAdapter
 import com.kai.padhelper.ui.viewmodels.PadSearchViewModel
-import com.kai.padhelper.ui.viewmodels.PadSearchViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
-    lateinit var viewModelFactory: PadSearchViewModelFactory
-    @Inject
     lateinit var padSearchAdapter: PadSearchAdapter
-    private lateinit var mPadSearchViewModel: PadSearchViewModel
+
+    private val padSearchViewModel: PadSearchViewModel by viewModels()
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // init viewModel
-        DaggerPadSearchComponent.create().inject(this)
-        mPadSearchViewModel = ViewModelProvider(this, viewModelFactory)[PadSearchViewModel::class.java]
 
         // 連接RecyclerView
         val padSearchRecyclerView: RecyclerView = findViewById(R.id.padSearchRecyclerView)
@@ -50,7 +45,7 @@ class MainActivity : ComponentActivity() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.bindingAdapterPosition
-                mPadSearchViewModel.removeItem(position)
+                padSearchViewModel.removeItem(position)
             }
         })
         itemTouchHelper.attachToRecyclerView(padSearchRecyclerView)
@@ -68,7 +63,7 @@ class MainActivity : ComponentActivity() {
                 padSearchAdapter.setPadSearchList(tmpList)
                 padSearchAdapter.notifyDataSetChanged()
                 val queryUrl = "https://pad.chesterip.cc/" + urlEditText.text + "/"
-                mPadSearchViewModel.fetchData(queryUrl)
+                padSearchViewModel.fetchData(queryUrl)
             } else {
                 Toast.makeText(this, "輸入編號錯誤！", Toast.LENGTH_SHORT).show()
             }
@@ -77,7 +72,7 @@ class MainActivity : ComponentActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun setPadSearchObserver() {
-        mPadSearchViewModel.padSearchListLiveData.observe(this, Observer { newData ->
+        padSearchViewModel.padSearchListLiveData.observe(this, Observer { newData ->
             padSearchAdapter.setPadSearchList(newData)
             padSearchAdapter.notifyDataSetChanged()
         })

@@ -6,11 +6,12 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.lang.Exception
+import javax.inject.Inject
 
-object PadSearchRepository {
+class PadSearchRepository @Inject constructor() : IPadSearchRepository {
     private lateinit var mHtmlContent: Document
 
-    suspend fun fetchHtmlContent(url: String) {
+    override suspend fun fetchHtmlContent(url: String) {
         withContext(Dispatchers.IO) {
             try {
                 mHtmlContent = Jsoup.connect(url).get()
@@ -29,22 +30,22 @@ object PadSearchRepository {
         }
     }
 
-    fun getCharacterName(): String? {
+    override fun getCharacterName(): String? {
         val elements = selectElement("h1.mb-0.monster-name")
         return elements?.first()?.text()
     }
 
-    fun getCharacterIconUrl(): String? {
+    override fun getCharacterIconUrl(): String? {
         val elements = selectElement("img.mr-2.monster-icon")
         return elements?.first()?.attr("src")
     }
 
-    fun getTypeIconUrls(): MutableList<String>? {
+    override fun getTypeIconUrls(): MutableList<String>? {
         val elements = selectElement("img.type-icon")
         return elements?.eachAttr("src")
     }
 
-    fun getAwokenAndKillerIconUrls(): MutableMap<String, MutableList<String>> {
+    override fun getAwokenAndKillerIconUrls(): MutableMap<String, MutableList<String>> {
         val res = mutableMapOf<String, MutableList<String>>()
         val awakenings = mutableListOf<String>()
         val superAwakenings = mutableListOf<String>()
@@ -74,7 +75,7 @@ object PadSearchRepository {
         return res
     }
 
-    fun getSkillCd(): Pair<String?, String?>{
+    override fun getSkillCd(): Pair<String?, String?> {
         // 提取 LV.1 CD 的數值
         val lv1CdSpan = selectElement("span.badge-steelblue")
         val lv1Cd = lv1CdSpan?.first()?.ownText()?.split(" ")?.get(2)
