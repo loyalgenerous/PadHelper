@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kai.padhelper.R
@@ -15,7 +17,18 @@ import javax.inject.Inject
 
 class SearchAdapter @Inject constructor() :
     RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
-    private var mPadSearchList = listOf<PadSearchModel?>()
+
+    private val differCallback = object : DiffUtil.ItemCallback<PadSearchModel>() {
+        override fun areItemsTheSame(oldItem: PadSearchModel, newItem: PadSearchModel): Boolean {
+            return oldItem.characterId == newItem.characterId
+        }
+
+        override fun areContentsTheSame(oldItem: PadSearchModel, newItem: PadSearchModel): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    val differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pad_search, parent, false)
@@ -25,7 +38,7 @@ class SearchAdapter @Inject constructor() :
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         println("onBindViewHolder, position: $position")
-        val character = mPadSearchList[position]
+        val character = differ.currentList[position]
 
         if (character == null) {
             holder.nameTextView.text = "Loading..."
@@ -85,12 +98,12 @@ class SearchAdapter @Inject constructor() :
             } else {
                 holder.skillCdTextView.text = "Skill: ${character.skillCd?.second}"
             }
-            holder.characterId.text = "No. " + character.id
+            holder.characterId.text = "No. " + character.characterId
         }
     }
 
     override fun getItemCount(): Int {
-        return mPadSearchList.size
+        return differ.currentList.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -101,13 +114,6 @@ class SearchAdapter @Inject constructor() :
         val superAwokenImagesLinearLayout: LinearLayout = itemView.findViewById(R.id.superAwokenImagesLinearLayout)
         val skillCdTextView: TextView = itemView.findViewById(R.id.skillCdTextView)
         val characterId: TextView = itemView.findViewById(R.id.character_id)
-    }
-    fun setPadSearchList(padSearchList: List<PadSearchModel?>) {
-        this.mPadSearchList = padSearchList
-    }
-
-    fun getPadSearchList(): MutableList<PadSearchModel?> {
-        return mPadSearchList.toMutableList()
     }
 
     private fun Int.toDp(view: View): Int {

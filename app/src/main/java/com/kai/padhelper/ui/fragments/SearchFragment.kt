@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -55,11 +54,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         val fetchButton: Button = view.findViewById(R.id.fetchButton)
         fetchButton.setOnClickListener {
             if (urlEditText.text.toString() != ""
-                && urlEditText.text?.toString()?.toInt() in 1..10497) {
-                val tmpList = searchAdapter.getPadSearchList()
+                && urlEditText.text?.toString()?.toInt() in 1..20000) {
+                val tmpList = searchAdapter.differ.currentList.toMutableList()
                 tmpList.add(0, null)
-                searchAdapter.setPadSearchList(tmpList)
-                searchAdapter.notifyDataSetChanged()
+                searchAdapter.differ.submitList(tmpList.toList())
+                //searchAdapter.notifyDataSetChanged()
                 val queryUrl = "https://pad.chesterip.cc/" + urlEditText.text
                 viewModel.fetchData(queryUrl)
             } else {
@@ -70,8 +69,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun setPadSearchObserver() {
         viewModel.padSearchListLiveData.observe(viewLifecycleOwner) { newData ->
-            searchAdapter.setPadSearchList(newData)
-            searchAdapter.notifyDataSetChanged()
+            searchAdapter.differ.submitList(newData)
+            //searchAdapter.setPadSearchList(newData)
+            //searchAdapter.notifyDataSetChanged()
         }
     }
 }
