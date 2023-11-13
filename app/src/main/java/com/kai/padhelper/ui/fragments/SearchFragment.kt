@@ -57,8 +57,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 && urlEditText.text?.toString()?.toInt() in 1..20000) {
                 val tmpList = searchAdapter.differ.currentList.toMutableList()
                 tmpList.add(0, null)
-                searchAdapter.differ.submitList(tmpList.toList())
-                //searchAdapter.notifyDataSetChanged()
+                searchAdapter.differ.submitList(tmpList.toList()) {
+                    padSearchRecyclerView.scrollToPosition(0)
+                }
                 val queryUrl = "https://pad.chesterip.cc/" + urlEditText.text
                 viewModel.fetchData(queryUrl)
             } else {
@@ -70,8 +71,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private fun setPadSearchObserver() {
         viewModel.padSearchListLiveData.observe(viewLifecycleOwner) { newData ->
             searchAdapter.differ.submitList(newData)
-            //searchAdapter.setPadSearchList(newData)
-            //searchAdapter.notifyDataSetChanged()
         }
     }
 }
