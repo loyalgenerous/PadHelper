@@ -1,29 +1,27 @@
 package com.kai.padhelper.data.repository
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import org.jsoup.Jsoup
+import com.kai.padhelper.data.remote.HtmlFetcher
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.lang.Exception
 import javax.inject.Inject
 
-class PadSearchRepository @Inject constructor() : IPadSearchRepository {
-    private lateinit var mHtmlContent: Document
+class PadSearchRepository @Inject constructor(
+    private val htmlFetcher: HtmlFetcher
+) : IPadSearchRepository {
+    private lateinit var htmlContent: Document
 
     override suspend fun fetchHtmlContent(url: String) {
-        withContext(Dispatchers.IO) {
-            try {
-                mHtmlContent = Jsoup.connect(url).get()
-            } catch (e: Exception) {
-                println("failed when fetchHtmlContent" + e.printStackTrace())
-            }
+        try {
+            htmlContent = htmlFetcher.fetchHtml(url)
+        } catch (e: Exception) {
+            println("failed when fetchHtmlContent" + e.printStackTrace())
         }
     }
 
     private fun selectElement(cssSelector: String): Elements? {
         return try {
-            mHtmlContent.select(cssSelector)
+            htmlContent.select(cssSelector)
         } catch (e: Exception) {
             println("Failed when selecting element: ${e.printStackTrace()}")
             null
