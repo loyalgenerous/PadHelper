@@ -24,15 +24,7 @@ class PadSearchRepository @Inject constructor(
     }
 
     override fun getPadCharacter(): PadCharacter {
-        return PadCharacter(
-            HtmlParser.getCharacterName(htmlContent),
-            HtmlParser.getCharacterIconUrl(htmlContent),
-            HtmlParser.getTypeIconUrls(htmlContent),
-            HtmlParser.getAwokenAndKillerIconUrls(htmlContent)["awoken"],
-            HtmlParser.getAwokenAndKillerIconUrls(htmlContent)["superAwoken"],
-            HtmlParser.getSkillCd(htmlContent),
-            HtmlParser.getCharacterId(htmlContent)
-        )
+        return HtmlParser.getPadCharacter(htmlContent)
     }
 
     override suspend fun upsertPadCharacter(padCharacter: PadCharacter) =

@@ -13,4 +13,6 @@
     <color name="nightModeColorPrimary">#1E1E1E</color>
     <color name="nightModeColorPrimaryDark">#000000</color>
     <color name="nightModeColorAccent">#FFA726</color>
+    <color name="colorBottomNavItemSelected">#FFA726</color>
+    <color name="colorBottomNavItemUnselected">#777777</color>
 </resources>

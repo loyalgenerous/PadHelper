@@ -1,6 +1,7 @@
 package com.kai.padhelper.ui.adapters
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,71 +36,9 @@ class SearchAdapter @Inject constructor() :
         return ViewHolder(view)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        println("onBindViewHolder, position: $position")
         val character = differ.currentList[position]
-
-        if (character == null) {
-            holder.nameTextView.text = "Loading..."
-            holder.iconImageView.setImageResource(R.drawable.placeholder_image)
-            holder.typeImagesLinearLayout.removeAllViews()
-            holder.awokenImagesLinearLayout.removeAllViews()
-            holder.superAwokenImagesLinearLayout.removeAllViews()
-            holder.skillCdTextView.text = ""
-            holder.characterId.text = ""
-        } else {
-            holder.nameTextView.text = character.name
-            Glide.with(holder.iconImageView.context)
-                .load(character.iconUrl)
-                .placeholder(R.drawable.placeholder_image)
-                .into(holder.iconImageView)
-            holder.typeImagesLinearLayout.removeAllViews()
-            holder.awokenImagesLinearLayout.removeAllViews()
-            holder.superAwokenImagesLinearLayout.removeAllViews()
-            character.typeUrls?.let { urls ->
-                for (url in urls) {
-                    val imageView = ImageView(holder.typeImagesLinearLayout.context)
-                    imageView.layoutParams = LinearLayout.LayoutParams(24.toDp(imageView), 24.toDp(imageView))
-                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                    Glide.with(holder.typeImagesLinearLayout.context)
-                        .load(url)
-                        .placeholder(R.drawable.placeholder_image)
-                        .into(imageView)
-                    holder.typeImagesLinearLayout.addView(imageView)
-                }
-            }
-            character.awokenUrls?.let { urls ->
-                for (url in urls) {
-                    val imageView = ImageView(holder.awokenImagesLinearLayout.context)
-                    imageView.layoutParams = LinearLayout.LayoutParams(24.toDp(imageView), 24.toDp(imageView))
-                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                    Glide.with(holder.awokenImagesLinearLayout.context)
-                        .load(url)
-                        //.placeholder(R.drawable.placeholder_image)
-                        .into(imageView)
-                    holder.awokenImagesLinearLayout.addView(imageView)
-                }
-            }
-            character.superAwokenUrls?.let { urls ->
-                for (url in urls) {
-                    val imageView = ImageView(holder.superAwokenImagesLinearLayout.context)
-                    imageView.layoutParams = LinearLayout.LayoutParams(24.toDp(imageView), 24.toDp(imageView))
-                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                    Glide.with(holder.superAwokenImagesLinearLayout.context)
-                        .load(url)
-                        //.placeholder(R.drawable.placeholder_image)
-                        .into(imageView)
-                    holder.superAwokenImagesLinearLayout.addView(imageView)
-                }
-            }
-            if (character.skillCd?.first != null && character.skillCd?.first != "null") {
-                holder.skillCdTextView.text = "Skill: ${character.skillCd?.first}->${character.skillCd?.second}"
-            } else {
-                holder.skillCdTextView.text = "Skill: ${character.skillCd?.second}"
-            }
-            holder.characterId.text = "No." + character.characterId
-        }
+        holder.bind(character)
     }
 
     override fun getItemCount(): Int {
@@ -107,17 +46,80 @@ class SearchAdapter @Inject constructor() :
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
-        val iconImageView: ImageView = itemView.findViewById(R.id.iconImageView)
-        val typeImagesLinearLayout: LinearLayout = itemView.findViewById(R.id.typeImagesLinearLayout)
-        val awokenImagesLinearLayout: LinearLayout = itemView.findViewById(R.id.awokenImagesLinearLayout)
-        val superAwokenImagesLinearLayout: LinearLayout = itemView.findViewById(R.id.superAwokenImagesLinearLayout)
-        val skillCdTextView: TextView = itemView.findViewById(R.id.skillCdTextView)
-        val characterId: TextView = itemView.findViewById(R.id.character_id)
+        private val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
+        private val iconImageView: ImageView = itemView.findViewById(R.id.iconImageView)
+        private val typeImagesLinearLayout: LinearLayout = itemView.findViewById(R.id.typeImagesLinearLayout)
+        private val awokenImagesLinearLayout: LinearLayout = itemView.findViewById(R.id.awokenImagesLinearLayout)
+        private val superAwokenImagesLinearLayout: LinearLayout = itemView.findViewById(R.id.superAwokenImagesLinearLayout)
+        private val skillCdTextView: TextView = itemView.findViewById(R.id.skillCdTextView)
+        private val characterId: TextView = itemView.findViewById(R.id.character_id)
+
+        @SuppressLint("SetTextI18n")
+        fun bind(padCharacter: PadCharacter?) {
+            if (padCharacter == null) {
+                // 设置为默认加载状态
+                setupLoadingState()
+            } else {
+                nameTextView.text = padCharacter.name
+                loadImage(iconImageView.context, padCharacter.iconUrl, iconImageView, true)
+                updateLinearLayout(typeImagesLinearLayout, padCharacter.typeUrls)
+                updateLinearLayout(awokenImagesLinearLayout, padCharacter.awokenUrls)
+                updateLinearLayout(superAwokenImagesLinearLayout, padCharacter.superAwokenUrls)
+                skillCdTextView.text = getSkillCdText(padCharacter)
+                characterId.text = "No." + padCharacter.characterId
+                itemView.setOnClickListener {
+                    onItemClickListener?.let { it(padCharacter) }
+                }
+            }
+        }
+
+        private fun setupLoadingState() {
+            nameTextView.text = "讀取中..."
+            iconImageView.setImageResource(R.drawable.placeholder_image)
+            typeImagesLinearLayout.removeAllViews()
+            awokenImagesLinearLayout.removeAllViews()
+            superAwokenImagesLinearLayout.removeAllViews()
+            skillCdTextView.text = ""
+            characterId.text = ""
+        }
+
+        @SuppressLint("CheckResult")
+        private fun loadImage(context: Context, url: String?, imageView: ImageView,
+                              withPlaceholder: Boolean = false) {
+            val glideRequest = Glide.with(context).load(url)
+            if (withPlaceholder) {
+                glideRequest.placeholder(R.drawable.placeholder_image)
+            }
+            glideRequest.into(imageView)
+        }
+
+        private fun updateLinearLayout(linearLayout: LinearLayout, urls: List<String>?) {
+            linearLayout.removeAllViews()
+            urls?.let {
+                for (url in it) {
+                    val imageView = ImageView(linearLayout.context)
+                    imageView.layoutParams = LinearLayout.LayoutParams(24.toDp(imageView), 24.toDp(imageView))
+                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+                    loadImage(linearLayout.context, url, imageView)
+                    linearLayout.addView(imageView)
+                }
+            }
+        }
+
+        private fun getSkillCdText(character: PadCharacter): String {
+            return character.skillCd?.let {
+                if (it.first != null && it.first != "null") "Skill: ${it.first}->${it.second}" else "Skill: ${it.second}"
+            } ?: ""
+        }
+
+        private fun Int.toDp(view: View): Int {
+            val density = view.context.resources.displayMetrics.density
+            return (this * density).toInt()
+        }
     }
 
-    private fun Int.toDp(view: View): Int {
-        val density = view.context.resources.displayMetrics.density
-        return (this * density).toInt()
+    private var onItemClickListener: ((PadCharacter) -> Unit)? = null
+    fun setOnItemClickListener(listener: ((PadCharacter) -> Unit)) {
+        onItemClickListener = listener
     }
 }

@@ -1,9 +1,12 @@
 package com.kai.padhelper.data.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.kai.padhelper.util.Constants
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(
     Constants.TABLE_NAME_PAD_CHARACTER
 )
@@ -18,4 +21,4 @@ data class PadCharacter(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     val timestamp: Long = System.currentTimeMillis()
-)
+) : Parcelable

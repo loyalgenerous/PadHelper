@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -63,16 +64,29 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         fetchButton.setOnClickListener {
             if (urlEditText.text.toString() != ""
                 && urlEditText.text?.toString()?.toInt() in 1..20000) {
+
+                // Create temp null character for instant reaction.
                 val tmpList = searchAdapter.differ.currentList.toMutableList()
                 tmpList.add(0, null)
                 searchAdapter.differ.submitList(tmpList.toList()) {
                     padSearchRecyclerView.scrollToPosition(0)
                 }
+
                 val queryUrl = "https://pad.chesterip.cc/" + urlEditText.text
                 viewModel.fetchData(queryUrl)
             } else {
                 Toast.makeText(requireContext(), "輸入編號錯誤！", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        searchAdapter.setOnItemClickListener { padCharacter ->
+            val bundle = Bundle().apply {
+                putParcelable("padCharacter", padCharacter)
+            }
+            findNavController().navigate(
+                R.id.action_searchFragment_to_characterDetailFragment,
+                bundle
+            )
         }
     }
 
