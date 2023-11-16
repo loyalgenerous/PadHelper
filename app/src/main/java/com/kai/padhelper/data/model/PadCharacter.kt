@@ -1,6 +1,15 @@
 package com.kai.padhelper.data.model
 
-data class PadSearchModel(
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.kai.padhelper.util.Constants
+
+@Entity(
+    Constants.TABLE_NAME_PAD_CHARACTER
+)
+data class PadCharacter(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int? = null,
     var name: String?,
     var iconUrl: String?,
     var typeUrls: MutableList<String>?,

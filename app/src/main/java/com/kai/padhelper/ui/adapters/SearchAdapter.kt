@@ -12,18 +12,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kai.padhelper.R
-import com.kai.padhelper.data.model.PadSearchModel
+import com.kai.padhelper.data.model.PadCharacter
 import javax.inject.Inject
 
 class SearchAdapter @Inject constructor() :
     RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
-    private val differCallback = object : DiffUtil.ItemCallback<PadSearchModel>() {
-        override fun areItemsTheSame(oldItem: PadSearchModel, newItem: PadSearchModel): Boolean {
+    private val differCallback = object : DiffUtil.ItemCallback<PadCharacter>() {
+        override fun areItemsTheSame(oldItem: PadCharacter, newItem: PadCharacter): Boolean {
             return oldItem.characterId == newItem.characterId
         }
 
-        override fun areContentsTheSame(oldItem: PadSearchModel, newItem: PadSearchModel): Boolean {
+        override fun areContentsTheSame(oldItem: PadCharacter, newItem: PadCharacter): Boolean {
             return oldItem == newItem
         }
     }

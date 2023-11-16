@@ -1,5 +1,7 @@
 package com.kai.padhelper.dagger
 
+import android.app.Application
+import com.kai.padhelper.data.db.AppDataBase
 import com.kai.padhelper.data.remote.HtmlFetcher
 import com.kai.padhelper.data.remote.JsoupHtmlFetcher
 import com.kai.padhelper.data.repository.IPadSearchRepository
@@ -20,6 +22,12 @@ abstract class RepositoryModule {
         @Singleton
         fun provideHtmlFetcher(): HtmlFetcher {
             return JsoupHtmlFetcher()
+        }
+
+        @Provides
+        @Singleton
+        fun provideAppDataBase(app: Application): AppDataBase {
+            return AppDataBase(app)
         }
     }
 

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.kai.padhelper.R
 import com.kai.padhelper.ui.MainActivity
 import com.kai.padhelper.ui.adapters.SearchAdapter
@@ -42,7 +43,14 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.bindingAdapterPosition
-                viewModel.removeItem(position)
+                val padCharacter = searchAdapter.differ.currentList[position]
+                viewModel.deleteCharacterSearchResult(padCharacter)
+                Snackbar.make(view, "已刪除結果", Snackbar.LENGTH_LONG).apply {
+                    setAction("復原") {
+                        viewModel.saveCharacterSearchResult(padCharacter)
+                    }
+                    show()
+                }
             }
         })
         itemTouchHelper.attachToRecyclerView(padSearchRecyclerView)
@@ -69,7 +77,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun setPadSearchObserver() {
-        viewModel.padSearchListLiveData.observe(viewLifecycleOwner) { newData ->
+        viewModel.getSavedSearchResult().observe(viewLifecycleOwner) { newData ->
             searchAdapter.differ.submitList(newData)
         }
     }
