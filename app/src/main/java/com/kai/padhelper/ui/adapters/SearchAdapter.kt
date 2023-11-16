@@ -76,7 +76,7 @@ class SearchAdapter @Inject constructor() :
                     imageView.scaleType = ImageView.ScaleType.CENTER_CROP
                     Glide.with(holder.awokenImagesLinearLayout.context)
                         .load(url)
-                        .placeholder(R.drawable.placeholder_image)
+                        //.placeholder(R.drawable.placeholder_image)
                         .into(imageView)
                     holder.awokenImagesLinearLayout.addView(imageView)
                 }
@@ -88,17 +88,17 @@ class SearchAdapter @Inject constructor() :
                     imageView.scaleType = ImageView.ScaleType.CENTER_CROP
                     Glide.with(holder.superAwokenImagesLinearLayout.context)
                         .load(url)
-                        .placeholder(R.drawable.placeholder_image)
+                        //.placeholder(R.drawable.placeholder_image)
                         .into(imageView)
                     holder.superAwokenImagesLinearLayout.addView(imageView)
                 }
             }
-            if (character.skillCd?.first != null) {
+            if (character.skillCd?.first != null && character.skillCd?.first != "null") {
                 holder.skillCdTextView.text = "Skill: ${character.skillCd?.first}->${character.skillCd?.second}"
             } else {
                 holder.skillCdTextView.text = "Skill: ${character.skillCd?.second}"
             }
-            holder.characterId.text = "No. " + character.characterId
+            holder.characterId.text = "No." + character.characterId
         }
     }
 

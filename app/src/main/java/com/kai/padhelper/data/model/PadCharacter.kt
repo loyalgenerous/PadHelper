@@ -8,13 +8,14 @@ import com.kai.padhelper.util.Constants
     Constants.TABLE_NAME_PAD_CHARACTER
 )
 data class PadCharacter(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
     var name: String?,
     var iconUrl: String?,
     var typeUrls: MutableList<String>?,
     var awokenUrls: MutableList<String>?,
     var superAwokenUrls: MutableList<String>?,
     var skillCd: Pair<String?, String?>?,
-    var characterId: String?
+    var characterId: String?,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int? = null,
+    val timestamp: Long = System.currentTimeMillis()
 )

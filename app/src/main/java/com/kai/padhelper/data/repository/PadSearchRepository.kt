@@ -24,7 +24,7 @@ class PadSearchRepository @Inject constructor(
     }
 
     override fun getPadCharacter(): PadCharacter {
-        return PadCharacter(null,
+        return PadCharacter(
             HtmlParser.getCharacterName(htmlContent),
             HtmlParser.getCharacterIconUrl(htmlContent),
             HtmlParser.getTypeIconUrls(htmlContent),

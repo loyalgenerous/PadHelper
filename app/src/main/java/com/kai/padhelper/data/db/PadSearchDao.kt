@@ -16,6 +16,6 @@ interface PadSearchDao {
     @Delete
     suspend fun deleteResult(padCharacter: PadCharacter)
 
-    @Query("SELECT * FROM $TABLE_NAME_PAD_CHARACTER")
+    @Query("SELECT * FROM $TABLE_NAME_PAD_CHARACTER ORDER BY timestamp DESC")
     fun getSavedResult(): LiveData<List<PadCharacter>>
 }
