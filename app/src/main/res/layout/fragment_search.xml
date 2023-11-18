@@ -8,7 +8,7 @@
         android:id="@+id/padSearchRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/fetchButton"
+        android:layout_above="@id/character_id_edit_text"
         android:padding="16dp" />
     <EditText
         android:id="@+id/character_id_edit_text"
@@ -18,20 +18,10 @@
         android:hint="在此輸入角色編號"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@id/fetchButton"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
         tools:ignore="HardcodedText,TextFields"
         android:importantForAutofill="no" />
-    <Button
-        android:id="@+id/fetchButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="編號搜尋"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        tools:ignore="HardcodedText" />
 </RelativeLayout>

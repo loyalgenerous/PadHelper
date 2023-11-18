@@ -1,8 +1,9 @@
 package com.kai.padhelper.ui.fragments
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
-import android.widget.Button
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -61,22 +62,29 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         setPadSearchObserver()
 
         val urlEditText = view.findViewById<EditText>(R.id.character_id_edit_text)
-        val fetchButton: Button = view.findViewById(R.id.fetchButton)
-        fetchButton.setOnClickListener {
-            if (isValidInt(urlEditText.text.toString())
-                && urlEditText.text?.toString()?.toInt() in 1..20000) {
+        urlEditText.setOnEditorActionListener { _, actionId, keyEvent ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                keyEvent?.action == KeyEvent.ACTION_DOWN &&
+                keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (isValidInt(urlEditText.text.toString())
+                    && urlEditText.text?.toString()?.toInt() in 1..20000) {
 
-                // Create temp null character for instant reaction.
-                val tmpList = searchAdapter.differ.currentList.toMutableList()
-                tmpList.add(0, null)
-                searchAdapter.differ.submitList(tmpList.toList()) {
-                    padSearchRecyclerView.scrollToPosition(0)
+                    // Create temp null character for instant reaction.
+                    val tmpList = searchAdapter.differ.currentList.toMutableList()
+                    tmpList.add(0, null)
+                    searchAdapter.differ.submitList(tmpList.toList()) {
+                        padSearchRecyclerView.scrollToPosition(0)
+                    }
+
+                    val queryUrl = "https://pad.chesterip.cc/" + urlEditText.text
+                    searchViewModel.fetchData(queryUrl)
+                    urlEditText.setText("")
+                } else {
+                    Toast.makeText(requireContext(), "輸入編號錯誤！", Toast.LENGTH_SHORT).show()
                 }
-
-                val queryUrl = "https://pad.chesterip.cc/" + urlEditText.text
-                searchViewModel.fetchData(queryUrl)
+                true
             } else {
-                Toast.makeText(requireContext(), "輸入編號錯誤！", Toast.LENGTH_SHORT).show()
+                false
             }
         }
 
