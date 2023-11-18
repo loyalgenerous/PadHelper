@@ -1,5 +1,6 @@
 package com.kai.padhelper.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.text.InputType
 import android.text.method.ScrollingMovementMethod
@@ -7,6 +8,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.PopupMenu
@@ -25,6 +27,10 @@ import com.kai.padhelper.ui.adapters.TeamRecordAdapter
 import com.kai.padhelper.ui.viewmodels.RecordViewModel
 import com.kai.padhelper.util.Utility.Companion.extractCharacterIdFromIconUrl
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
@@ -80,8 +86,13 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
     }
     private fun setRecordObserver() {
         viewModel.getSavedRecords().observe(viewLifecycleOwner) { newData ->
-            recordAdapter.differ.submitList(newData)
-            binding.emptyView.visibility = if (newData.isEmpty()) View.VISIBLE else View.GONE
+            val oldSize = recordAdapter.differ.currentList.size
+            recordAdapter.differ.submitList(newData) {
+                binding.emptyView.visibility = if (newData.isEmpty()) View.VISIBLE else View.GONE
+                if (newData.size > oldSize) {
+                    binding.teamRecordRecyclerView.scrollToPosition(recordAdapter.itemCount - 1)
+                }
+            }
         }
     }
 
@@ -124,21 +135,26 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
     }
 
     private fun showSearchIdDialog(teamRecord: TeamRecord, viewName: String, view: View) {
-        val builder = AlertDialog.Builder(requireContext())
-        val inflater = layoutInflater
-        val dialogLayout = inflater.inflate(R.layout.dialog_input_id, null)
-        val editTextRoleId = dialogLayout.findViewById<EditText>(R.id.editTextRoleId)
-
-        with(builder) {
-            setView(dialogLayout)
-            setPositiveButton("確定") { _, _ ->
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_input_id, null)
+        val editText = dialogView.findViewById<EditText>(R.id.editTextRoleId)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setPositiveButton("確定") { _, _ ->
                 (view as ImageView).setImageResource(R.drawable.loading)
-                val id = editTextRoleId.text.toString()
+                val id = editText.text.toString()
                 viewModel.queryCharacterId(teamRecord, viewName, id)
             }
-            setNegativeButton("取消", null)
-            show()
+            .setNegativeButton("取消", null)
+            .create()
+        dialog.setOnShowListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(100)
+                editText.requestFocus()
+                val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                inputMethodManager?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+            }
         }
+        dialog.show()
     }
 
     private fun showEditDialog(teamRecord: TeamRecord, viewName: String) {
@@ -149,6 +165,13 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
             "textTeamName" -> {
                 title = "輸入隊伍名稱"
                 editText.setText(teamRecord.teamName)
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(100)
+                    editText.requestFocus()
+                    editText.setSelection(editText.text.length)
+                    val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    inputMethodManager?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+                }
             }
             "txtTeamInfo" -> {
                 title = "輸入隊伍紀錄"
