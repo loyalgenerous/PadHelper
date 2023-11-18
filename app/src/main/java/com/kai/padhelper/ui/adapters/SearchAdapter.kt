@@ -74,7 +74,7 @@ class SearchAdapter:
 
         private fun setupLoadingState() {
             nameTextView.text = "讀取中..."
-            iconImageView.setImageResource(R.drawable.placeholder_image)
+            iconImageView.setImageResource(R.drawable.loading)
             typeImagesLinearLayout.removeAllViews()
             awokenImagesLinearLayout.removeAllViews()
             superAwokenImagesLinearLayout.removeAllViews()
@@ -86,8 +86,9 @@ class SearchAdapter:
         private fun loadImage(context: Context, url: String?, imageView: ImageView,
                               withPlaceholder: Boolean = false) {
             val glideRequest = Glide.with(context).load(url)
-            if (withPlaceholder) {
-                glideRequest.placeholder(R.drawable.placeholder_image)
+            if (withPlaceholder || (url != null && url != "null" && url.isNotBlank())) {
+                println("url: $url")
+                glideRequest.placeholder(R.drawable.loading)
             }
             glideRequest.into(imageView)
         }

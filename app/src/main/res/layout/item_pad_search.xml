@@ -12,7 +12,6 @@
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/placeholder_image"
         android:contentDescription="character icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -189,7 +189,7 @@ class TeamRecordAdapter(
             }
             Glide.with(context)
                 .load(drawable)
-                .placeholder(R.drawable.placeholder_image)
+                .placeholder(R.drawable.loading)
                 .into(imageView)
         }
     }
