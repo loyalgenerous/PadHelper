@@ -15,4 +15,5 @@
     <color name="nightModeColorAccent">#FFA726</color>
     <color name="colorBottomNavItemSelected">#FFA726</color>
     <color name="colorBottomNavItemUnselected">#777777</color>
+    <color name="fabBackgroundColor">#777777</color>
 </resources>

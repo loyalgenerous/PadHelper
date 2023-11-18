@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="請輸入角色ID"
+        android:layout_marginBottom="8dp"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/editTextRoleId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="角色ID"
+        tools:ignore="Autofill,HardcodedText" />
+</LinearLayout>

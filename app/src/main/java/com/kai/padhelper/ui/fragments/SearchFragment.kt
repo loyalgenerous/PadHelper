@@ -14,18 +14,19 @@ import com.google.android.material.snackbar.Snackbar
 import com.kai.padhelper.R
 import com.kai.padhelper.ui.MainActivity
 import com.kai.padhelper.ui.adapters.SearchAdapter
-import com.kai.padhelper.ui.viewmodels.ViewModel
+import com.kai.padhelper.ui.viewmodels.SearchViewModel
+import com.kai.padhelper.util.Utility.Companion.isValidInt
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search) {
-    private lateinit var viewModel: ViewModel
+    private lateinit var searchViewModel: SearchViewModel
     private lateinit var searchAdapter: SearchAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = (activity as MainActivity).viewModel
+        searchViewModel = (activity as MainActivity).searchViewModel
         // 連接RecyclerView
         val padSearchRecyclerView: RecyclerView = view.findViewById(R.id.padSearchRecyclerView)
         padSearchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -45,10 +46,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.bindingAdapterPosition
                 val padCharacter = searchAdapter.differ.currentList[position]
-                viewModel.deleteCharacterSearchResult(padCharacter)
+                searchViewModel.deleteCharacterSearchResult(padCharacter)
                 Snackbar.make(view, "已刪除結果", Snackbar.LENGTH_LONG).apply {
                     setAction("復原") {
-                        viewModel.saveCharacterSearchResult(padCharacter)
+                        searchViewModel.saveCharacterSearchResult(padCharacter)
                     }
                     show()
                 }
@@ -62,7 +63,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         val urlEditText = view.findViewById<EditText>(R.id.character_id_edit_text)
         val fetchButton: Button = view.findViewById(R.id.fetchButton)
         fetchButton.setOnClickListener {
-            if (urlEditText.text.toString() != ""
+            if (isValidInt(urlEditText.text.toString())
                 && urlEditText.text?.toString()?.toInt() in 1..20000) {
 
                 // Create temp null character for instant reaction.
@@ -73,7 +74,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 }
 
                 val queryUrl = "https://pad.chesterip.cc/" + urlEditText.text
-                viewModel.fetchData(queryUrl)
+                searchViewModel.fetchData(queryUrl)
             } else {
                 Toast.makeText(requireContext(), "輸入編號錯誤！", Toast.LENGTH_SHORT).show()
             }
@@ -81,7 +82,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         searchAdapter.setOnItemClickListener { padCharacter ->
             val bundle = Bundle().apply {
-                putParcelable("padCharacter", padCharacter)
+                putString("characterId", padCharacter.characterId)
             }
             findNavController().navigate(
                 R.id.action_searchFragment_to_characterDetailFragment,
@@ -91,7 +92,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun setPadSearchObserver() {
-        viewModel.getSavedSearchResult().observe(viewLifecycleOwner) { newData ->
+        searchViewModel.getSavedSearchResult().observe(viewLifecycleOwner) { newData ->
             searchAdapter.differ.submitList(newData)
         }
     }

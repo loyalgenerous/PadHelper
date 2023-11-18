@@ -6,15 +6,17 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.kai.padhelper.data.model.PadCharacter
+import com.kai.padhelper.data.model.TeamRecord
 
 @Database(
-    entities = [PadCharacter::class],
+    entities = [PadCharacter::class, TeamRecord::class],
     version = 1,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDataBase : RoomDatabase() {
-    abstract fun getPadCharacterDao(): PadSearchDao
+    abstract fun getPadCharacterDao(): SearchDao
+    abstract fun getTeamRecordDao(): RecordDao
 
     companion object {
         @Volatile

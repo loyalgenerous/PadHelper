@@ -22,13 +22,13 @@ class PadSearchRepositoryTest {
 
     private lateinit var mockHtmlFetcher: HtmlFetcher
     private lateinit var mockDocument: Document
-    private lateinit var padSearchRepository: PadSearchRepository
+    private lateinit var padSearchRepository: Repository
 
     @Before
     fun setUp() {
         mockHtmlFetcher = mock(HtmlFetcher::class.java)
         mockDocument = mock(Document::class.java)
-        padSearchRepository = PadSearchRepository(mockHtmlFetcher)
+        padSearchRepository = Repository(mockHtmlFetcher)
     }
 
     @Test

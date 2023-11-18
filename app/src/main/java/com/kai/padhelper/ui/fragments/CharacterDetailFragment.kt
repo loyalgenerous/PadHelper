@@ -11,10 +11,10 @@ import androidx.navigation.fragment.navArgs
 import com.kai.padhelper.R
 import com.kai.padhelper.databinding.FragmentCharacterDetailBinding
 import com.kai.padhelper.ui.MainActivity
-import com.kai.padhelper.ui.viewmodels.ViewModel
+import com.kai.padhelper.ui.viewmodels.SearchViewModel
 
 class CharacterDetailFragment : Fragment(R.layout.fragment_character_detail) {
-    private lateinit var viewModel: ViewModel
+    private lateinit var searchViewModel: SearchViewModel
 
     private var _viewBinding: FragmentCharacterDetailBinding? = null
     private val binding get() = _viewBinding!!
@@ -31,12 +31,12 @@ class CharacterDetailFragment : Fragment(R.layout.fragment_character_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = (activity as MainActivity).viewModel
+        searchViewModel = (activity as MainActivity).searchViewModel
 
-        val padCharacter = args.padCharacter
+        val characterId = args.characterId
         binding.webView.apply {
             webViewClient = WebViewClient()
-            loadUrl("https://pad.chesterip.cc/" + padCharacter.characterId)
+            loadUrl("https://pad.chesterip.cc/$characterId")
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {

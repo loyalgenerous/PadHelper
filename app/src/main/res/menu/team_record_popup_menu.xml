@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/set_character"
+        android:title="設定角色"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@+id/character_detail"
+        android:title="角色詳細"
+        tools:ignore="HardcodedText" />
+</menu>

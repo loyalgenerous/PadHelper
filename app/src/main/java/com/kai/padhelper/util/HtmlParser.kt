@@ -21,6 +21,11 @@ object HtmlParser {
         )
     }
 
+    fun getCharacterIconUrl(content: Document): String? {
+        htmlContent = content
+        return getCharacterIconUrl()
+    }
+
     private fun selectElement(cssSelector: String): Elements? {
         return try {
             htmlContent.select(cssSelector)

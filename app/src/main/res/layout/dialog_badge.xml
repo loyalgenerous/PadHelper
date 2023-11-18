@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:columnCount="8"
+    android:rowCount="3"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/pass"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/pass"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/move"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/move"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/aoe"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/aoe"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/heal25"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/heal25"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/hp5"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/hp5"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/atk5"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/atk5"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/sb"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/sb"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/bound"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/bound"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/sx"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/sx"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/drop"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/drop"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/heal35"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/heal35"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/hp15"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/hp15"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/atk15"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/atk15"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/move_plus"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        
+        android:src="@drawable/move_plus"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/exp"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/exp"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/dark"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/dark"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/disturb"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/disturb"
+        android:contentDescription="@string/badge" />
+
+    <ImageView
+        android:id="@+id/poison"
+        android:layout_width="28.8dp"
+        android:layout_height="21.6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/poison"
+        android:contentDescription="@string/badge" />
+
+</GridLayout>

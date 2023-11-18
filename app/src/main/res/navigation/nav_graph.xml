@@ -33,8 +33,8 @@
         android:name="com.kai.padhelper.ui.fragments.CharacterDetailFragment"
         android:label="CharacterDetailFragment" >
         <argument
-            android:name="padCharacter"
-            app:argType="com.kai.padhelper.data.model.PadCharacter" />
+            android:name="characterId"
+            app:argType="string" />
     </fragment>
 
 </navigation>

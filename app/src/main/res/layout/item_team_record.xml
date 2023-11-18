@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="16dp">
+
+        <ImageView
+            android:id="@+id/imgBadge"
+            android:layout_width="36dp"
+            android:layout_height="27dp"
+            android:src="@android:drawable/ic_btn_speak_now"
+            android:contentDescription="@string/badge" />
+
+        <TextView
+            android:id="@+id/textTeamName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/team_name"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:background="@android:color/transparent" />
+
+        <ImageView
+            android:id="@+id/imgViceCaptain"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_dialog_info"
+            android:contentDescription="@string/vice_captain" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:baselineAligned="false"
+        android:weightSum="5">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/imgLeader"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@android:drawable/ic_lock_lock"
+                android:contentDescription="@string/leader"
+                android:scaleType="fitCenter" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/imgMember1"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@android:drawable/ic_media_play"
+                android:contentDescription="@string/member_1"
+                android:scaleType="fitCenter" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/imgMember2"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@android:drawable/ic_media_play"
+                android:contentDescription="@string/member_2" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/imgMember3"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@android:drawable/ic_media_play"
+                android:contentDescription="@string/member_3"
+                android:scaleType="fitCenter" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/imgMember4"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@android:drawable/ic_media_play"
+                android:contentDescription="@string/member_4"
+                android:scaleType="fitCenter" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtTeamInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/team_record"
+        android:visibility="visible"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        android:padding="8dp" />
+
+</LinearLayout>

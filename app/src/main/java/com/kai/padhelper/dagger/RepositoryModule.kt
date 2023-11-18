@@ -4,8 +4,8 @@ import android.app.Application
 import com.kai.padhelper.data.db.AppDataBase
 import com.kai.padhelper.data.remote.HtmlFetcher
 import com.kai.padhelper.data.remote.JsoupHtmlFetcher
-import com.kai.padhelper.data.repository.IPadSearchRepository
-import com.kai.padhelper.data.repository.PadSearchRepository
+import com.kai.padhelper.data.repository.IRepository
+import com.kai.padhelper.data.repository.Repository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -34,6 +34,6 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindPadSearchRepository(
-        padSearchRepository: PadSearchRepository
-    ): IPadSearchRepository
+        padSearchRepository: Repository
+    ): IRepository
 }

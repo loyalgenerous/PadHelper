@@ -9,7 +9,7 @@ import com.kai.padhelper.data.model.PadCharacter
 import com.kai.padhelper.util.Constants.Companion.TABLE_NAME_PAD_CHARACTER
 
 @Dao
-interface PadSearchDao {
+interface SearchDao {
     @Upsert
     suspend fun upsertSearchResult(padCharacter: PadCharacter)
 
