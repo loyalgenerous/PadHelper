@@ -13,10 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kai.padhelper.R
 import com.kai.padhelper.data.model.TeamRecord
+import com.kai.padhelper.data.model.TeamRole
 import com.kai.padhelper.databinding.ItemTeamRecordBinding
 
 class TeamRecordAdapter(
-    private val onViewClicked: (teamRecord: TeamRecord, view: View, url: String?) -> Unit
+    private val onViewClicked: (teamRecord: TeamRecord, view: View, url: String?, role: TeamRole?) -> Unit
 ) : RecyclerView.Adapter<TeamRecordAdapter.ViewHolder>() {
 
     private val differCallback = object : DiffUtil.ItemCallback<TeamRecord>() {
@@ -55,32 +56,32 @@ class TeamRecordAdapter(
             // 隊長
             loadImage(binding.imgLeader.context, teamRecord.leaderUrl, binding.imgLeader)
             binding.imgLeader.setOnClickListener {
-                onViewClicked(teamRecord, binding.imgLeader, teamRecord.leaderUrl)
+                onViewClicked(teamRecord, binding.imgLeader, teamRecord.leaderUrl,TeamRole.LEADER)
             }
             // 隊員1
             loadImage(binding.imgMember1.context, teamRecord.member1Url, binding.imgMember1)
             binding.imgMember1.setOnClickListener {
-                onViewClicked(teamRecord, binding.imgMember1, teamRecord.member1Url)
+                onViewClicked(teamRecord, binding.imgMember1, teamRecord.member1Url, TeamRole.MEMBER1)
             }
             // 隊員2
             loadImage(binding.imgMember2.context, teamRecord.member2Url, binding.imgMember2)
             binding.imgMember2.setOnClickListener {
-                onViewClicked(teamRecord, binding.imgMember2, teamRecord.member2Url)
+                onViewClicked(teamRecord, binding.imgMember2, teamRecord.member2Url, TeamRole.MEMBER2)
             }
             // 隊員3
             loadImage(binding.imgMember3.context, teamRecord.member3Url, binding.imgMember3)
             binding.imgMember3.setOnClickListener {
-                onViewClicked(teamRecord, binding.imgMember3, teamRecord.member3Url)
+                onViewClicked(teamRecord, binding.imgMember3, teamRecord.member3Url, TeamRole.MEMBER3)
             }
             // 隊員4
             loadImage(binding.imgMember4.context, teamRecord.member4Url, binding.imgMember4)
             binding.imgMember4.setOnClickListener {
-                onViewClicked(teamRecord, binding.imgMember4, teamRecord.member4Url)
+                onViewClicked(teamRecord, binding.imgMember4, teamRecord.member4Url, TeamRole.MEMBER4)
             }
             // 好友隊長
             loadImage(binding.imgViceCaptain.context, teamRecord.viceLeaderIconUrl, binding.imgViceCaptain)
             binding.imgViceCaptain.setOnClickListener {
-                onViewClicked(teamRecord, binding.imgViceCaptain, teamRecord.viceLeaderIconUrl)
+                onViewClicked(teamRecord, binding.imgViceCaptain, teamRecord.viceLeaderIconUrl, TeamRole.VICE_CAPTAIN)
             }
             // 隊伍名稱
             if (teamRecord.teamName == null || teamRecord.teamName == "null") {
@@ -89,11 +90,11 @@ class TeamRecordAdapter(
                 binding.textTeamName.text = teamRecord.teamName
             }
             binding.textTeamName.setOnClickListener {
-                onViewClicked(teamRecord, binding.textTeamName, teamRecord.teamName)
+                onViewClicked(teamRecord, binding.textTeamName, teamRecord.teamName, null)
             }
             // 隊伍紀錄
             binding.txtTeamInfo.setOnClickListener {
-                onViewClicked(teamRecord, binding.txtTeamInfo, teamRecord.recordText)
+                onViewClicked(teamRecord, binding.txtTeamInfo, teamRecord.recordText, null)
             }
         }
 
@@ -162,7 +163,7 @@ class TeamRecordAdapter(
                 else -> "null"
             }
             val updateRecord = teamRecord.copy(badgeIconUrl = badgeType)
-            onViewClicked(updateRecord, binding.imgBadge, badgeType)
+            onViewClicked(updateRecord, binding.imgBadge, badgeType, null)
         }
 
         private fun loadBadgeImage(context: Context, url: String?, imageView: ImageView) {

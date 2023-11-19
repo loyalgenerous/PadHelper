@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.kai.padhelper.R
 import com.kai.padhelper.data.model.TeamRecord
+import com.kai.padhelper.data.model.TeamRole
 import com.kai.padhelper.databinding.FragmentTeamRecordBinding
 import com.kai.padhelper.ui.MainActivity
 import com.kai.padhelper.ui.adapters.TeamRecordAdapter
@@ -52,8 +53,8 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = (activity as MainActivity).recordViewModel
-        recordAdapter = TeamRecordAdapter { teamRecord, clickedView, url ->
-            onCharacterIconClickListener(teamRecord, clickedView, url)
+        recordAdapter = TeamRecordAdapter { teamRecord, clickedView, url, role ->
+            onViewClickListener(teamRecord, clickedView, url, role)
         }
         binding.teamRecordRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -102,21 +103,21 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
         }
     }
 
-    private fun onCharacterIconClickListener(teamRecord: TeamRecord, view: View, url: String?) {
+    private fun onViewClickListener(teamRecord: TeamRecord, view: View, url: String?, role: TeamRole?) {
         val viewName = resources.getResourceEntryName(view.id)
         if (viewName == "imgBadge") {
             viewModel.saveTeamRecord(teamRecord)
         } else if (viewName == "textTeamName" || viewName == "txtTeamInfo") {
             showEditDialog(teamRecord, viewName)
         } else if (url == null || url == "null") {
-            showSearchIdDialog(teamRecord, viewName, view)
+            showSearchIdDialog(teamRecord, view, role!!)
         } else {
             val popupMenu = PopupMenu(requireContext(), view)
             popupMenu.menuInflater.inflate(R.menu.team_record_popup_menu, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.set_character -> {
-                        showSearchIdDialog(teamRecord, viewName,view)
+                        showSearchIdDialog(teamRecord, view, role!!)
                     }
                     R.id.character_detail -> {
                         val bundle = Bundle().apply {
@@ -134,7 +135,7 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
         }
     }
 
-    private fun showSearchIdDialog(teamRecord: TeamRecord, viewName: String, view: View) {
+    private fun showSearchIdDialog(teamRecord: TeamRecord, view: View, role: TeamRole) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_input_id, null)
         val editText = dialogView.findViewById<EditText>(R.id.editTextRoleId)
         val dialog = AlertDialog.Builder(requireContext())
@@ -142,7 +143,7 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
             .setPositiveButton("確定") { _, _ ->
                 (view as ImageView).setImageResource(R.drawable.loading)
                 val id = editText.text.toString()
-                viewModel.queryCharacterId(teamRecord, viewName, id)
+                viewModel.queryCharacterId(teamRecord, id, role)
             }
             .setNegativeButton("取消", null)
             .create()
