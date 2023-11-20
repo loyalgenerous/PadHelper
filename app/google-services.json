@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "640246678792",
+    "project_id": "padhelper-247cd",
+    "storage_bucket": "padhelper-247cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640246678792:android:cd69869e186788ad8b18bd",
+        "android_client_info": {
+          "package_name": "com.kai.padhelper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYREKV2Ys0UMXe4TIxQB3zb9fbG8Hcjww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

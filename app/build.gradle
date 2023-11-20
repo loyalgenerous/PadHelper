@@ -5,6 +5,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'kotlin-android'
     id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
 }
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 android {
@@ -60,6 +61,7 @@ dependencies {
     // Navigation Component
     implementation 'androidx.navigation:navigation-fragment-ktx:2.7.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.5'
+    implementation 'com.google.firebase:firebase-config-ktx:21.6.0'
 
     // Test
     testImplementation 'junit:junit:4.13.2'
@@ -86,11 +88,15 @@ dependencies {
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
-    implementation "androidx.activity:activity-ktx:1.8.0"
+    implementation "androidx.activity:activity-ktx:1.8.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.2"
 
     // Room
     implementation "androidx.room:room-runtime:2.6.0"
     kapt "androidx.room:room-compiler:2.6.0"
     implementation "androidx.room:room-ktx:2.6.0"
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:32.6.0')
+    implementation 'com.google.firebase:firebase-analytics'
 }

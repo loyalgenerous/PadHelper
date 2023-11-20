@@ -16,6 +16,7 @@ import com.kai.padhelper.R
 import com.kai.padhelper.ui.MainActivity
 import com.kai.padhelper.ui.adapters.SearchAdapter
 import com.kai.padhelper.ui.viewmodels.SearchViewModel
+import com.kai.padhelper.util.RemoteConfig
 import com.kai.padhelper.util.Utility.Companion.isValidInt
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -65,9 +66,13 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         urlEditText.setOnEditorActionListener { _, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE ||
                 keyEvent?.action == KeyEvent.ACTION_DOWN &&
-                keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
+            ) {
+                println("max index: ${RemoteConfig.MAX_CHARACTER_INDEX}")
                 if (isValidInt(urlEditText.text.toString())
-                    && urlEditText.text?.toString()?.toInt() in 1..20000) {
+                    && urlEditText.text?.toString()
+                        ?.toLong() in 1..RemoteConfig.MAX_CHARACTER_INDEX!!
+                ) {
 
                     // Create temp null character for instant reaction.
                     val tmpList = searchAdapter.differ.currentList.toMutableList()

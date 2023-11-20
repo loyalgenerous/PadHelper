@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,8 @@ import com.kai.padhelper.databinding.FragmentTeamRecordBinding
 import com.kai.padhelper.ui.MainActivity
 import com.kai.padhelper.ui.adapters.TeamRecordAdapter
 import com.kai.padhelper.ui.viewmodels.RecordViewModel
+import com.kai.padhelper.util.RemoteConfig
+import com.kai.padhelper.util.Utility
 import com.kai.padhelper.util.Utility.Companion.extractCharacterIdFromIconUrl
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -142,8 +145,14 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
             .setView(dialogView)
             .setPositiveButton("確定") { _, _ ->
                 (view as ImageView).setImageResource(R.drawable.loading)
-                val id = editText.text.toString()
-                viewModel.queryCharacterId(teamRecord, id, role)
+                val id = editText.text.toString().toLong()
+                println("max index: ${RemoteConfig.MAX_CHARACTER_INDEX}")
+                if (id in 1..RemoteConfig.MAX_CHARACTER_INDEX!!) {
+                    viewModel.queryCharacterId(teamRecord, id.toString(), role)
+                } else {
+                    Toast.makeText(requireContext(), "輸入編號錯誤！", Toast.LENGTH_SHORT).show()
+                }
+
             }
             .setNegativeButton("取消", null)
             .create()

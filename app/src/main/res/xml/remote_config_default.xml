@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap xmlns:android="http://schemas.android.com/apk/res/android">
+    <entry>
+        <key>max_character_index</key>
+        <value>10745</value>
+    </entry>
+</defaultsMap>
