@@ -24,6 +24,7 @@ object RemoteConfig {
             if (it.isSuccessful) {
                 MAX_CHARACTER_INDEX = firebaseRemoteConfig.getLong("max_character_index")
             }
+            // 可以在这里通知其他部分配置已更新
         }
 
         initialized = true
