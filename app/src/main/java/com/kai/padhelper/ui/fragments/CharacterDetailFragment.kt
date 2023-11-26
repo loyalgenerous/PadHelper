@@ -10,11 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.kai.padhelper.R
 import com.kai.padhelper.databinding.FragmentCharacterDetailBinding
-import com.kai.padhelper.ui.MainActivity
-import com.kai.padhelper.ui.viewmodels.SearchViewModel
 
 class CharacterDetailFragment : Fragment(R.layout.fragment_character_detail) {
-    private lateinit var searchViewModel: SearchViewModel
 
     private var _viewBinding: FragmentCharacterDetailBinding? = null
     private val binding get() = _viewBinding!!
@@ -31,7 +28,6 @@ class CharacterDetailFragment : Fragment(R.layout.fragment_character_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchViewModel = (activity as MainActivity).searchViewModel
 
         val characterId = args.characterId
         binding.webView.apply {

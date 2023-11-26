@@ -15,6 +15,7 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,11 +25,9 @@ import com.kai.padhelper.R
 import com.kai.padhelper.data.model.TeamRecord
 import com.kai.padhelper.data.model.TeamRole
 import com.kai.padhelper.databinding.FragmentTeamRecordBinding
-import com.kai.padhelper.ui.MainActivity
 import com.kai.padhelper.ui.adapters.TeamRecordAdapter
 import com.kai.padhelper.ui.viewmodels.RecordViewModel
 import com.kai.padhelper.util.RemoteConfig
-import com.kai.padhelper.util.Utility
 import com.kai.padhelper.util.Utility.Companion.extractCharacterIdFromIconUrl
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -38,7 +37,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
-    private lateinit var viewModel: RecordViewModel
+    private val recordViewModel: RecordViewModel by viewModels()
     private lateinit var recordAdapter: TeamRecordAdapter
     private var _viewBinding: FragmentTeamRecordBinding? = null
     private val binding get() = _viewBinding!!
@@ -55,7 +54,6 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = (activity as MainActivity).recordViewModel
         recordAdapter = TeamRecordAdapter { teamRecord, clickedView, url, role ->
             onViewClickListener(teamRecord, clickedView, url, role)
         }
@@ -83,13 +81,13 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.bindingAdapterPosition
                 val teamRecord = recordAdapter.differ.currentList[position]
-                viewModel.deleteTeamRecord(teamRecord)
+                recordViewModel.deleteTeamRecord(teamRecord)
                 showDeleteTeamConfirmDialog(view, teamRecord)
             }
         })
     }
     private fun setRecordObserver() {
-        viewModel.getSavedRecords().observe(viewLifecycleOwner) { newData ->
+        recordViewModel.getSavedRecords().observe(viewLifecycleOwner) { newData ->
             val oldSize = recordAdapter.differ.currentList.size
             recordAdapter.differ.submitList(newData) {
                 binding.emptyView.visibility = if (newData.isEmpty()) View.VISIBLE else View.GONE
@@ -102,14 +100,14 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
 
     private fun setFabOnClickListener() {
         binding.fab.setOnClickListener {
-            viewModel.saveTeamRecord(TeamRecord())
+            recordViewModel.saveTeamRecord(TeamRecord())
         }
     }
 
     private fun onViewClickListener(teamRecord: TeamRecord, view: View, url: String?, role: TeamRole?) {
         val viewName = resources.getResourceEntryName(view.id)
         if (viewName == "imgBadge") {
-            viewModel.saveTeamRecord(teamRecord)
+            recordViewModel.saveTeamRecord(teamRecord)
         } else if (viewName == "textTeamName" || viewName == "txtTeamInfo") {
             showEditDialog(teamRecord, viewName)
         } else if (url == null || url == "null") {
@@ -146,9 +144,8 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
             .setPositiveButton("確定") { _, _ ->
                 (view as ImageView).setImageResource(R.drawable.loading)
                 val id = editText.text.toString().toLong()
-                println("max index: ${RemoteConfig.MAX_CHARACTER_INDEX}")
                 if (id in 1..RemoteConfig.MAX_CHARACTER_INDEX!!) {
-                    viewModel.queryCharacterId(teamRecord, id.toString(), role)
+                    recordViewModel.queryCharacterId(teamRecord, id.toString(), role)
                 } else {
                     Toast.makeText(requireContext(), "輸入編號錯誤！", Toast.LENGTH_SHORT).show()
                 }
@@ -204,7 +201,7 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
                     "txtTeamInfo" -> teamRecord.copy(recordText = editText.text.toString())
                     else -> teamRecord
                 }
-                viewModel.saveTeamRecord(updateRecord)
+                recordViewModel.saveTeamRecord(updateRecord)
                 dialog.dismiss()
             }
             .setNegativeButton("取消", null)
@@ -219,14 +216,14 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
             .setPositiveButton("確定") { dialog, _ ->
                 Snackbar.make(curView, "已刪除紀錄", Snackbar.LENGTH_LONG).apply {
                     setAction("復原") {
-                        viewModel.saveTeamRecord(teamRecord)
+                        recordViewModel.saveTeamRecord(teamRecord)
                     }
                     show()
                 }
                 dialog.dismiss()
             }
             .setNegativeButton("取消") { dialog, _ ->
-                viewModel.saveTeamRecord(teamRecord)
+                recordViewModel.saveTeamRecord(teamRecord)
                 dialog.dismiss()
             }
             .show()

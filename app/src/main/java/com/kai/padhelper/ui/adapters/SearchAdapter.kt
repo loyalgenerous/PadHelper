@@ -87,7 +87,6 @@ class SearchAdapter:
                               withPlaceholder: Boolean = false) {
             val glideRequest = Glide.with(context).load(url)
             if (withPlaceholder || (url != null && url != "null" && url.isNotBlank())) {
-                println("url: $url")
                 glideRequest.placeholder(R.drawable.loading)
             }
             glideRequest.into(imageView)

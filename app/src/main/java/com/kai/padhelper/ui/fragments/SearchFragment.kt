@@ -7,13 +7,13 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.kai.padhelper.R
-import com.kai.padhelper.ui.MainActivity
 import com.kai.padhelper.ui.adapters.SearchAdapter
 import com.kai.padhelper.ui.viewmodels.SearchViewModel
 import com.kai.padhelper.util.RemoteConfig
@@ -22,13 +22,12 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search) {
-    private lateinit var searchViewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel by viewModels()
     private lateinit var searchAdapter: SearchAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchViewModel = (activity as MainActivity).searchViewModel
         // 連接RecyclerView
         val padSearchRecyclerView: RecyclerView = view.findViewById(R.id.padSearchRecyclerView)
         padSearchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -68,7 +67,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 keyEvent?.action == KeyEvent.ACTION_DOWN &&
                 keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
             ) {
-                println("max index: ${RemoteConfig.MAX_CHARACTER_INDEX}")
                 if (isValidInt(urlEditText.text.toString())
                     && urlEditText.text?.toString()
                         ?.toLong() in 1..RemoteConfig.MAX_CHARACTER_INDEX!!

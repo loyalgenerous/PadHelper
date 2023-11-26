@@ -81,17 +81,10 @@ object HtmlParser {
     }
 
     private fun getSkillCd(): Pair<String?, String?> {
-        // 提取 LV.1 CD 的數值
         val lv1CdSpan = selectElement("span.badge-steelblue")
         val lv1Cd = lv1CdSpan?.first()?.ownText()?.split(" ")?.get(2)
-
-        // 提取 LV.MAX CD 的數值
         val lvMaxCdSpan = selectElement("span.badge-danger")
         val lvMaxCd = lvMaxCdSpan?.first()?.ownText()?.split(" ")?.get(2)
-
-        // 打印結果
-        println("LV.1 CD: $lv1Cd")
-        println("LV.MAX CD: $lvMaxCd")
         return Pair(lv1Cd, lvMaxCd)
     }
 
