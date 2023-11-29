@@ -20,16 +20,16 @@ abstract class RepositoryModule {
     companion object {
         @Provides
         @Singleton
-        fun provideHtmlFetcher(): HtmlFetcher {
-            return JsoupHtmlFetcher()
-        }
-
-        @Provides
-        @Singleton
         fun provideAppDataBase(app: Application): AppDataBase {
             return AppDataBase(app)
         }
     }
+
+    @Binds
+    @Singleton
+    abstract fun provideHtmlFetcher(
+        jsoupHtmlFetcher: JsoupHtmlFetcher
+    ): HtmlFetcher
 
     @Binds
     @Singleton

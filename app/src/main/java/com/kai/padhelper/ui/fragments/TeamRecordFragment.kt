@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,7 +31,6 @@ import com.kai.padhelper.ui.viewmodels.RecordViewModel
 import com.kai.padhelper.util.RemoteConfig
 import com.kai.padhelper.util.Utility.Companion.extractCharacterIdFromIconUrl
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -154,7 +154,7 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
             .setNegativeButton("取消", null)
             .create()
         dialog.setOnShowListener {
-            CoroutineScope(Dispatchers.Main).launch {
+            lifecycleScope.launch(Dispatchers.Main) {
                 delay(100)
                 editText.requestFocus()
                 val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -172,7 +172,7 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
             "textTeamName" -> {
                 title = "輸入隊伍名稱"
                 editText.setText(teamRecord.teamName)
-                CoroutineScope(Dispatchers.Main).launch {
+                lifecycleScope.launch(Dispatchers.Main) {
                     delay(100)
                     editText.requestFocus()
                     editText.setSelection(editText.text.length)
