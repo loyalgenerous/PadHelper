@@ -1,4 +1,4 @@
-package com.kai.padhelper.dagger
+package com.kai.padhelper.di
 
 import android.app.Application
 import com.kai.padhelper.data.db.AppDataBase

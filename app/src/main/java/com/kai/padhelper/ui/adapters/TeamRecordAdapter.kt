@@ -1,7 +1,6 @@
 package com.kai.padhelper.ui.adapters
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.kai.padhelper.R
 import com.kai.padhelper.data.model.TeamRecord
 import com.kai.padhelper.data.model.TeamRole
 import com.kai.padhelper.databinding.ItemTeamRecordBinding
 
 class TeamRecordAdapter(
+    private val glide: RequestManager,
     private val onViewClicked: (teamRecord: TeamRecord, view: View, url: String?, role: TeamRole?) -> Unit
 ) : RecyclerView.Adapter<TeamRecordAdapter.ViewHolder>() {
 
@@ -49,37 +49,37 @@ class TeamRecordAdapter(
     inner class ViewHolder(private val binding: ItemTeamRecordBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(teamRecord: TeamRecord) {
             // 徽章
-            loadBadgeImage(binding.imgBadge.context, teamRecord.badgeIconUrl, binding.imgBadge)
+            loadBadgeImage(teamRecord.badgeIconUrl, binding.imgBadge)
             binding.imgBadge.setOnClickListener {
                 showBadgeDialog(teamRecord)
             }
             // 隊長
-            loadImage(binding.imgLeader.context, teamRecord.leaderUrl, binding.imgLeader)
+            loadImage(teamRecord.leaderUrl, binding.imgLeader)
             binding.imgLeader.setOnClickListener {
                 onViewClicked(teamRecord, binding.imgLeader, teamRecord.leaderUrl,TeamRole.LEADER)
             }
             // 隊員1
-            loadImage(binding.imgMember1.context, teamRecord.member1Url, binding.imgMember1)
+            loadImage(teamRecord.member1Url, binding.imgMember1)
             binding.imgMember1.setOnClickListener {
                 onViewClicked(teamRecord, binding.imgMember1, teamRecord.member1Url, TeamRole.MEMBER1)
             }
             // 隊員2
-            loadImage(binding.imgMember2.context, teamRecord.member2Url, binding.imgMember2)
+            loadImage(teamRecord.member2Url, binding.imgMember2)
             binding.imgMember2.setOnClickListener {
                 onViewClicked(teamRecord, binding.imgMember2, teamRecord.member2Url, TeamRole.MEMBER2)
             }
             // 隊員3
-            loadImage(binding.imgMember3.context, teamRecord.member3Url, binding.imgMember3)
+            loadImage(teamRecord.member3Url, binding.imgMember3)
             binding.imgMember3.setOnClickListener {
                 onViewClicked(teamRecord, binding.imgMember3, teamRecord.member3Url, TeamRole.MEMBER3)
             }
             // 隊員4
-            loadImage(binding.imgMember4.context, teamRecord.member4Url, binding.imgMember4)
+            loadImage(teamRecord.member4Url, binding.imgMember4)
             binding.imgMember4.setOnClickListener {
                 onViewClicked(teamRecord, binding.imgMember4, teamRecord.member4Url, TeamRole.MEMBER4)
             }
             // 好友隊長
-            loadImage(binding.imgViceCaptain.context, teamRecord.viceLeaderIconUrl, binding.imgViceCaptain)
+            loadImage(teamRecord.viceLeaderIconUrl, binding.imgViceCaptain)
             binding.imgViceCaptain.setOnClickListener {
                 onViewClicked(teamRecord, binding.imgViceCaptain, teamRecord.viceLeaderIconUrl, TeamRole.VICE_CAPTAIN)
             }
@@ -99,10 +99,9 @@ class TeamRecordAdapter(
         }
 
         @SuppressLint("CheckResult")
-        private fun loadImage(context: Context, url: String?, imageView: ImageView) {
+        private fun loadImage(url: String?, imageView: ImageView) {
             val placeholder = if (url.isNullOrEmpty()) android.R.drawable.ic_menu_add else R.drawable.loading
-            Glide.with(context)
-                .load(url)
+            glide.load(url)
                 .placeholder(placeholder)
                 .into(imageView)
         }
@@ -166,7 +165,7 @@ class TeamRecordAdapter(
             onViewClicked(updateRecord, binding.imgBadge, badgeType, null)
         }
 
-        private fun loadBadgeImage(context: Context, url: String?, imageView: ImageView) {
+        private fun loadBadgeImage(url: String?, imageView: ImageView) {
             val drawable = when (url) {
                 "pass" -> R.drawable.pass
                 "move" -> R.drawable.move
@@ -188,8 +187,7 @@ class TeamRecordAdapter(
                 "poison" -> R.drawable.poison
                 else -> R.drawable.pass
             }
-            Glide.with(context)
-                .load(drawable)
+            glide.load(drawable)
                 .placeholder(R.drawable.loading)
                 .into(imageView)
         }

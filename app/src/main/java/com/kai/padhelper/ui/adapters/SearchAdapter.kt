@@ -1,7 +1,6 @@
 package com.kai.padhelper.ui.adapters
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +10,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.kai.padhelper.R
 import com.kai.padhelper.data.model.PadCharacter
 
-class SearchAdapter:
+class SearchAdapter(private val glide: RequestManager):
     RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
     private val differCallback = object : DiffUtil.ItemCallback<PadCharacter>() {
@@ -60,7 +59,7 @@ class SearchAdapter:
                 setupLoadingState()
             } else {
                 nameTextView.text = padCharacter.name
-                loadImage(iconImageView.context, padCharacter.iconUrl, iconImageView, true)
+                loadImage(padCharacter.iconUrl, iconImageView, true)
                 updateLinearLayout(typeImagesLinearLayout, padCharacter.typeUrls)
                 updateLinearLayout(awokenImagesLinearLayout, padCharacter.awokenUrls)
                 updateLinearLayout(superAwokenImagesLinearLayout, padCharacter.superAwokenUrls)
@@ -83,13 +82,18 @@ class SearchAdapter:
         }
 
         @SuppressLint("CheckResult")
-        private fun loadImage(context: Context, url: String?, imageView: ImageView,
-                              withPlaceholder: Boolean = false) {
-            val glideRequest = Glide.with(context).load(url)
+        private fun loadImage(url: String?, imageView: ImageView, withPlaceholder: Boolean = false) {
+            var placeholder = 0
             if (withPlaceholder || (url != null && url != "null" && url.isNotBlank())) {
-                glideRequest.placeholder(R.drawable.loading)
+                placeholder = R.drawable.loading
             }
-            glideRequest.into(imageView)
+            glide.load(url)
+                .apply {
+                    if (placeholder != 0) {
+                        placeholder(placeholder)
+                    }
+                }
+                .into(imageView)
         }
 
         private fun updateLinearLayout(linearLayout: LinearLayout, urls: List<String>?) {
@@ -99,7 +103,7 @@ class SearchAdapter:
                     val imageView = ImageView(linearLayout.context)
                     imageView.layoutParams = LinearLayout.LayoutParams(24.toDp(imageView), 24.toDp(imageView))
                     imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                    loadImage(linearLayout.context, url, imageView)
+                    loadImage(url, imageView)
                     linearLayout.addView(imageView)
                 }
             }

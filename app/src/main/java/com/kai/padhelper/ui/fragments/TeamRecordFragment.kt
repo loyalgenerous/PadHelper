@@ -16,11 +16,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
 import com.kai.padhelper.R
 import com.kai.padhelper.data.model.TeamRecord
@@ -34,6 +37,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
@@ -41,6 +45,8 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
     private lateinit var recordAdapter: TeamRecordAdapter
     private var _viewBinding: FragmentTeamRecordBinding? = null
     private val binding get() = _viewBinding!!
+    @Inject
+    lateinit var glide: RequestManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +60,7 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recordAdapter = TeamRecordAdapter { teamRecord, clickedView, url, role ->
+        recordAdapter = TeamRecordAdapter(glide) { teamRecord, clickedView, url, role ->
             onViewClickListener(teamRecord, clickedView, url, role)
         }
         binding.teamRecordRecyclerView.apply {
@@ -155,10 +161,12 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
             .create()
         dialog.setOnShowListener {
             lifecycleScope.launch(Dispatchers.Main) {
-                delay(100)
-                editText.requestFocus()
-                val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                inputMethodManager?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    delay(100)
+                    editText.requestFocus()
+                    val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    inputMethodManager?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+                }
             }
         }
         dialog.show()
@@ -173,11 +181,13 @@ class TeamRecordFragment : Fragment(R.layout.fragment_team_record) {
                 title = "輸入隊伍名稱"
                 editText.setText(teamRecord.teamName)
                 lifecycleScope.launch(Dispatchers.Main) {
-                    delay(100)
-                    editText.requestFocus()
-                    editText.setSelection(editText.text.length)
-                    val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                    inputMethodManager?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+                    repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        delay(100)
+                        editText.requestFocus()
+                        editText.setSelection(editText.text.length)
+                        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                        inputMethodManager?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+                    }
                 }
             }
             "txtTeamInfo" -> {
