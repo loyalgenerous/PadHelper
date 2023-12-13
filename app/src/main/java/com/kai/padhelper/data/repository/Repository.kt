@@ -49,4 +49,8 @@ class Repository @Inject constructor(
 
     override fun getSavedTeamRecords(): LiveData<List<TeamRecord>> =
         db.getTeamRecordDao().getSavedRecords()
+
+    override suspend fun getRecordById(id: String): TeamRecord {
+        return db.getTeamRecordDao().getRecordById(id)
+    }
 }

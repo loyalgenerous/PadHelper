@@ -18,4 +18,7 @@ interface RecordDao {
 
     @Query("SELECT * FROM ${Constants.TABLE_NAME_TEAM_RECORD}")
     fun getSavedRecords(): LiveData<List<TeamRecord>>
+
+    @Query("SELECT * FROM ${Constants.TABLE_NAME_TEAM_RECORD} WHERE id = :id")
+    suspend fun getRecordById(id: String): TeamRecord
 }

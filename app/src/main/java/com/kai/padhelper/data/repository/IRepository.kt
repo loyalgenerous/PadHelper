@@ -14,4 +14,5 @@ interface IRepository {
     suspend fun upsertTeamRecord(teamRecord: TeamRecord)
     suspend fun deleteTeamRecord(teamRecord: TeamRecord)
     fun getSavedTeamRecords(): LiveData<List<TeamRecord>>
+    suspend fun getRecordById(id: String): TeamRecord
 }
